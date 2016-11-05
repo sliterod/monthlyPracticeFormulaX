@@ -57,6 +57,17 @@ public class Timer : MonoBehaviour {
         currentLapTime = 0.0f;
 
         GameObject.Find("ManagerUI").GetComponent<LapTimer>().UpdateTimer(timeOnRace);
+
+        if (lapIndex + 1 <= 3) { 
+            GameObject.Find("ManagerUI").GetComponent<LapLabel>().ChangeLapLabel(lapIndex+1);
+        }
+    }
+
+    /// <summary>
+    /// Change to a new lap
+    /// </summary>
+    public void ChangeLap() {
+        ResetLap();
     }
 
     /// <summary>

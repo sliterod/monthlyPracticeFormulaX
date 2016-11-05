@@ -6,6 +6,7 @@ public class AddObject : MonoBehaviour {
 
     static string gamestatePath = "Assets/Prefabs/Gamestate.prefab";
     static string canvasPath = "Assets/Prefabs/CanvasUI.prefab";
+    static string finishLinePath = "Assets/Prefabs/FinishLine.prefab";
 
     /// <summary>
     /// Add Gamestate Object to current scene
@@ -34,6 +35,22 @@ public class AddObject : MonoBehaviour {
         else
         {
             AddObjectToScene(canvasPath);
+        }
+    }
+
+    /// <summary>
+    /// Add CanvasUI Object to current scene
+    /// </summary>
+    public static void AddFinishLine()
+    {
+
+        if (GameObject.Find("FinishLine"))
+        {
+            Debug.Log("FINISHLINE already exists on scene");
+        }
+        else
+        {
+            AddObjectToScene(finishLinePath);
         }
     }
 

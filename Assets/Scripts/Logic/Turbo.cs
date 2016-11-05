@@ -3,15 +3,15 @@ using System.Collections;
 
 public class Turbo : MonoBehaviour {
 
-    float turboFactor;
+    void OnCollisionEnter(Collision collision) {
+        Debug.Log("Turbo booster, increase speed");
+        TurboPanel();
+    }
 
-	// Use this for initialization
-	void Start () {
-        turboFactor = 0.125f;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    /// <summary>
+    /// Increase speed with a turbo panel
+    /// </summary>
+    void TurboPanel() {
+        //Send message to the vehicle
+    }
 }
