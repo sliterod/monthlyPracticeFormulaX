@@ -4,8 +4,49 @@ using UnityEngine.UI;
 
 public class LifeBar : MonoBehaviour {
 
-    public RectTransform lifeBar;
-    public Image lifeBarImage;
+    public GameObject lifeBarLoneGO;
+    public GameObject lifeBarLtwoGO;
+    public RectTransform lifeBarLapOne;
+    public RectTransform lifeBarLapTwo;
+    RectTransform lifeBar;
+    Image lifeBarImage;
+
+    void Start() {
+        lifeBar = lifeBarLapOne;
+        lifeBarImage = lifeBar.GetComponent<Image>();
+    }
+
+    /// <summary>
+    /// Changes life bar after second lap
+    /// </summary>
+    public void ChangeLifeBar()
+    {
+        Vector3 lifeBarVector = lifeBarLapOne.localScale;
+
+        //Activating bars
+        lifeBarLoneGO.SetActive(false);
+        lifeBarLtwoGO.gameObject.SetActive(true);
+
+        //New bar
+        lifeBar = lifeBarLapTwo;
+        lifeBar.localScale = lifeBarVector;
+
+        //Image
+        ChangeLifeBarImage();
+
+        //Update
+        IncreaseLife(0.0f);
+    }
+
+
+    /// <summary>
+    /// Changes life bar image after second lap
+    /// </summary>
+    void ChangeLifeBarImage()
+    {
+        lifeBarImage = lifeBarLapTwo.GetComponent<Image>();
+        Debug.Log("Life bar image changed");
+    }
 
     /// <summary>
     /// Increases scale of object to simulate life

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class Timer : MonoBehaviour {
 
@@ -9,8 +10,8 @@ public class Timer : MonoBehaviour {
     int lapIndex;
     float[] lapTimes;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         lapTimes = new float[] { 5999.999f, 5999.999f, 5999.999f };
         timeOnRace = 0.0f;
         currentLapTime = 0.0f;
@@ -61,6 +62,10 @@ public class Timer : MonoBehaviour {
         if (lapIndex + 1 <= 3) { 
             GameObject.Find("ManagerUI").GetComponent<LapLabel>().ChangeLapLabel(lapIndex+1);
         }
+
+        if (lapIndex + 1 == 2) {
+            GameObject.Find("ManagerUI").GetComponent<LifeBar>().ChangeLifeBar();
+        }
     }
 
     /// <summary>
@@ -83,8 +88,10 @@ public class Timer : MonoBehaviour {
 
             lapIndex += 1;
 
-            if (lapIndex == lapTimes.Length) {
+            if (lapIndex == lapTimes.Length)
+            {
                 isTimerEnabled = false;
+                GameObject.Find("ManagerUI").GetComponent<ResultsScreen>().DisplayResults(lapTimes);
             }
         }
     }
@@ -102,9 +109,7 @@ public class Timer : MonoBehaviour {
     /// </summary>
     void ChooseBestTime() {
 
-        float[] bestArray = lapTimes;
-
-        System.Array.Sort(bestArray);
-        GameObject.Find("ManagerUI").GetComponent<LapTimer>().DisplayBestLap(bestArray[0]);
+        float best = lapTimes.Min();
+        GameObject.Find("ManagerUI").GetComponent<LapTimer>().DisplayBestLap(best);
     }
 }
