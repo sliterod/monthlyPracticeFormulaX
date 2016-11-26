@@ -30,7 +30,7 @@ public class LapTimer : MonoBehaviour {
     /// </summary>
     /// <param name="time">Time (as seconds/milliseconds)</param>
     /// <returns>Time formatted</returns>
-    string FormatTime(float time) {
+    public string FormatTime(float time) {
         string timeFormatted;
         string milliseconds;
 
@@ -42,4 +42,5 @@ public class LapTimer : MonoBehaviour {
 
         return timeFormatted;
     }
+
 }

@@ -10,6 +10,6 @@ public class LapLabel : MonoBehaviour {
     /// Changes current lap label
     /// </summary>
     public void ChangeLapLabel(int currentLap) {
-        lapLabel.text = "LAP\n" + currentLap.ToString() +"/3";
+        lapLabel.text = "LAP " + currentLap.ToString() +"/3";
     }
 }
