@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class Countdown : MonoBehaviour {
 
     public Text countdownText;
-    
+
     /// <summary>
     /// Starts countdown coroutine
     /// </summary>
