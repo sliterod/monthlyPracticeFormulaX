@@ -13,9 +13,17 @@ public class carControl : MonoBehaviour {
     public  Rigidbody rb;
     public float breaking = 0;
     public Vector3 com;
-
+    private bool braked  = false;
+    public float maxBrakeTorque = 100;
     bool isBreaking;
     bool isGas;
+    float currentSpeed;
+    float topSpeed = 150;
+    float maxReverseSpeed  = 50;
+    float decellarationSpeed = 30;
+    float lowestSteerAtSpeed = 50;
+    float lowSpeedSteerAngel = 10;
+    float highSpeedSteerAngel = 1;
 
 
     // Use this for initialization
@@ -31,24 +39,20 @@ public class carControl : MonoBehaviour {
 
         isGas = true;
     }
-	
-	// Update is called once per frame
-	void Update () {
 
+    void FixedUpdate()
+    {
+        Control();
+        HandBrake();        
+    }
+    // Update is called once per frame
+    void Update () {
 
-
-   
-
-        //Accelerate
-        wheelRR.motorTorque = maxTorque * Input.GetAxis("Vertical");
-         wheelRL.motorTorque = maxTorque * Input.GetAxis("Vertical");
-
-        //Turn
-            wheelFL.steerAngle = 30 * Input.GetAxis("Horizontal");
-            wheelFR.steerAngle = 30 * Input.GetAxis("Horizontal");
         
 
+        //HandBrake();
 
+        /*
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
@@ -68,8 +72,98 @@ public class carControl : MonoBehaviour {
             //wheelFL.enabled = false;
             //wheelFR.enabled = false;
         }
-        
+        */
+    }
+    public void Control()
+    {
+        currentSpeed = 2 * 22 / 7 * wheelRL.radius * wheelRL.rpm * 60 / 1000;
+        currentSpeed = Mathf.Round(currentSpeed);
 
-
+        if (currentSpeed < topSpeed && currentSpeed > -maxReverseSpeed && !braked)
+        {
+            //Accelerate
+            wheelRR.motorTorque = maxTorque * Input.GetAxis("Vertical");
+            wheelRL.motorTorque = maxTorque * Input.GetAxis("Vertical");
         }
+        else
+        {
+            wheelRR.motorTorque = 0;
+            wheelRL.motorTorque = 0;
+            //Turn
+            //wheelFL.steerAngle = 30 * Input.GetAxis("Horizontal");
+            //wheelFR.steerAngle = 30 * Input.GetAxis("Horizontal");
+        }
+        if (Input.GetButton("Vertical") == false)
+        {
+            wheelRR.brakeTorque = decellarationSpeed;
+            wheelRL.brakeTorque = decellarationSpeed;
+        } else {
+            wheelRR.brakeTorque = 0;
+            wheelRL.brakeTorque = 0;
+        }
+        var speedFactor = rb.velocity.magnitude / lowestSteerAtSpeed;
+        var currentSteerAngel = Mathf.Lerp(lowSpeedSteerAngel, highSpeedSteerAngel, speedFactor);
+        currentSteerAngel *= Input.GetAxis("Horizontal");
+        wheelFL.steerAngle = currentSteerAngel;
+        wheelFR.steerAngle = currentSteerAngel;
+    }
+
+    public void HandBrake()
+    {
+        //Debug.Log("Breaking...");
+        if (Input.GetButton("Jump"))
+        {
+            Debug.Log("Breaking...");
+            braked = true;
+        }
+        else
+        {
+            braked = false;
+        }
+        if (braked)
+        {
+            if (currentSpeed > 1)
+            {
+                wheelFR.brakeTorque = maxBrakeTorque;
+                wheelFL.brakeTorque = maxBrakeTorque;
+                wheelRR.motorTorque = 0;
+                wheelRL.motorTorque = 0;
+                //SetRearSlip(slipForwardFriction, slipSidewayFriction);
+            }
+            else if (currentSpeed < 0)
+            {
+                wheelRR.brakeTorque = maxBrakeTorque;
+                wheelRL.brakeTorque = maxBrakeTorque;
+                wheelRR.motorTorque = 0;
+                wheelRL.motorTorque = 0;
+                //SetRearSlip(1, 1);
+            }
+            else
+            {
+               // SetRearSlip(1, 1);
+            }
+          /*  if (currentSpeed < 1  currentSpeed > -1){
+                backLightObject.renderer.material = idleLightMaterial;
+            }else {
+                backLightObject.renderer.material = brakeLightMaterial;
+            }*/
+        }
+        else
+        {
+            wheelFR.brakeTorque = 0;
+            wheelFL.brakeTorque = 0;
+          //  SetRearSlip(myForwardFriction, mySidewayFriction);
+        }
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
