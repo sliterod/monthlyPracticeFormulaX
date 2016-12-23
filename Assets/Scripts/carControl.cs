@@ -29,6 +29,9 @@ public class carControl : MonoBehaviour {
     float slipForwardFriction;
     float slipSidewayFriction;
 
+    RaceState raceState;
+    Tachometer tachometer;
+    
     public void values()
     {
      myForwardFriction = wheelRR.forwardFriction.stiffness;
@@ -47,17 +50,24 @@ public class carControl : MonoBehaviour {
 
         wheelRL.brakeTorque = 0;
         wheelRR.brakeTorque = 0;
-
-
-
-
+        
         isGas = true;
+
+        raceState = GameObject.Find("Gamestate")
+            .GetComponent<RaceState>();
+
+        tachometer = GameObject.Find("ManagerUI")
+            .GetComponent<Tachometer>();
     }
 
     void FixedUpdate()
     {
-        Control();
-        HandBrake();        
+        if (raceState.CurrentState == Gamestate.race)
+        {
+            Control();
+            HandBrake();
+        }
+        
     }
     // Update is called once per frame
     void Update () {
@@ -120,6 +130,9 @@ public class carControl : MonoBehaviour {
         currentSteerAngel *= Input.GetAxis("Horizontal");
         wheelFL.steerAngle = currentSteerAngel;
         wheelFR.steerAngle = currentSteerAngel;
+
+        //Changing speed
+        tachometer.ChangeSpeedNumber(currentSpeed);
     }
 
     public void SetRearSlip(float currentForwardFriction, float currentSidewayFriction)
