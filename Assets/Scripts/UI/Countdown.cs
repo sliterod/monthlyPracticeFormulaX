@@ -28,5 +28,22 @@ public class Countdown : MonoBehaviour {
         yield return new WaitForSeconds(1.5f);
 
         countdownText.gameObject.SetActive(false);
+
+        ChangeToRace();
+    }
+
+    /// <summary>
+    /// Changes state to race and activates lap timer
+    /// </summary>
+    void ChangeToRace() {
+        //Change state
+        GameObject.Find("Gamestate")
+            .GetComponent<RaceState>()
+            .CurrentState = Gamestate.race;
+
+        //Enable Timer
+        GameObject.Find("Gamestate")
+            .GetComponent<Timer>()
+            .EnableTimer();
     }
 }

@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.A)) {
+        if (Input.GetKeyDown(KeyCode.L)) {
             isTimerEnabled = true;
         }
 
@@ -35,6 +35,13 @@ public class Timer : MonoBehaviour {
         {
             ResetLap();
         }
+    }
+
+    /// <summary>
+    /// Enables lap timer
+    /// </summary>
+    public void EnableTimer() {
+        isTimerEnabled = true;
     }
 
     /// <summary>
@@ -91,7 +98,11 @@ public class Timer : MonoBehaviour {
             if (lapIndex == lapTimes.Length)
             {
                 isTimerEnabled = false;
+                //Displaying Results
                 GameObject.Find("ManagerUI").GetComponent<ResultsScreen>().DisplayResults(lapTimes);
+
+                //Changing state
+                this.GetComponent<RaceState>().CurrentState = Gamestate.results;
             }
         }
     }

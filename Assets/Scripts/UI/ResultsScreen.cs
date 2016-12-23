@@ -74,9 +74,9 @@ public class ResultsScreen : MonoBehaviour {
             if (i == index)
             {
                 lapResults = lapResults +
-                    "<color=\"#008000ff\">" +
+                    "<color=\"#ffff00ff\">" +
                     lapTimer.FormatTime(lapTimes[i]) +
-                    "</color>"+
+                    "</color>"+ 
                     "\n";
             }
             else {
